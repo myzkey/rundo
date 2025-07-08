@@ -23,11 +23,19 @@ describe('promptForScript', () => {
     },
     {
       name: 'apps/web:dev',
-      value: { script: 'dev', command: 'vite dev', directory: '/project/apps/web' },
+      value: {
+        script: 'dev',
+        command: 'vite dev',
+        directory: '/project/apps/web',
+      },
     },
     {
       name: 'packages/ui:test',
-      value: { script: 'test', command: 'vitest run', directory: '/project/packages/ui' },
+      value: {
+        script: 'test',
+        command: 'vitest run',
+        directory: '/project/packages/ui',
+      },
     },
   ];
 

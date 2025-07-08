@@ -11,9 +11,9 @@ export async function promptForScript(
     throw new Error('No scripts found in any package.json files');
   }
 
-  const choiceMap = choices.map(choice => ({
+  const choiceMap = choices.map((choice) => ({
     name: choice.name,
-    value: choice.value
+    value: choice.value,
   }));
 
   const answer = await inquirer.prompt([
@@ -23,16 +23,19 @@ export async function promptForScript(
       message: '🔍 Search script:',
       source: (_answersSoFar: any, input: string) => {
         if (!input) return Promise.resolve(choiceMap);
-        
-        const searchTerms = input.toLowerCase().split(/\s+/).filter(term => term.length > 0);
-        const filtered = choiceMap.filter(choice => {
+
+        const searchTerms = input
+          .toLowerCase()
+          .split(/\s+/)
+          .filter((term) => term.length > 0);
+        const filtered = choiceMap.filter((choice) => {
           const choiceName = choice.name.toLowerCase();
-          return searchTerms.every(term => choiceName.includes(term));
+          return searchTerms.every((term) => choiceName.includes(term));
         });
         return Promise.resolve(filtered);
       },
-      pageSize: 15
-    }
+      pageSize: 15,
+    },
   ]);
 
   return answer.script;

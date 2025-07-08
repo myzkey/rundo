@@ -10,49 +10,62 @@ export interface RundoConfig {
 const DEFAULT_CONFIG: RundoConfig = {
   maxDepth: 5,
   ignore: [
-      // Node.js & frontend
-      'node_modules',
-      '.yarn',
-      'dist',
-      'build',
-      'out',
-      '.next',
-      '.nuxt',
-      '.output',
-      '.svelte-kit',
-      '.storybook-static',
-      '.turbo',
-      '.nx',
+    // Node.js & frontend
+    'node_modules',
+    '.yarn',
+    'dist',
+    'build',
+    'out',
+    '.next',
+    '.nuxt',
+    '.output',
+    '.svelte-kit',
+    '.storybook-static',
+    '.turbo',
+    '.nx',
 
-      // Infrastructure & deployment
-      '.git',
-      'vendor',
-      'coverage',
-      'tmp',
-      'log',
-      '.bundle',
-      'storage',
-      '.vercel',
-      '.firebase',
-      '.terraform',
-      '.aws-sam',
-      '.serverless',
-      '.gradle',
-      '.cache',
+    // Infrastructure & deployment
+    '.git',
+    'vendor',
+    'coverage',
+    'tmp',
+    'log',
+    '.bundle',
+    'storage',
+    '.vercel',
+    '.firebase',
+    '.terraform',
+    '.aws-sam',
+    '.serverless',
+    '.gradle',
+    '.cache',
 
-      // Language specific
-      'target', // Rust
-      'obj', // C/C++
-      'venv', '.venv', 'env', '.env', // Python
-      '.mypy_cache', '.pytest_cache', '__pycache__', // Python
-      'bootstrap/cache', // Laravel
+    // Language specific
+    'target', // Rust
+    'obj', // C/C++
+    'venv',
+    '.venv',
+    'env',
+    '.env', // Python
+    '.mypy_cache',
+    '.pytest_cache',
+    '__pycache__', // Python
+    'bootstrap/cache', // Laravel
   ],
   include: [],
 };
 
-const CONFIG_FILES = ['.rdrc', '.rdrc.json', '.rundorc', '.rundorc.json', 'rundo.config.json'];
+const CONFIG_FILES = [
+  '.rdrc',
+  '.rdrc.json',
+  '.rundorc',
+  '.rundorc.json',
+  'rundo.config.json',
+];
 
-export async function loadConfig(cwd: string = process.cwd()): Promise<RundoConfig> {
+export async function loadConfig(
+  cwd: string = process.cwd()
+): Promise<RundoConfig> {
   // Try to find config file
   for (const configFile of CONFIG_FILES) {
     try {
@@ -70,7 +83,10 @@ export async function loadConfig(cwd: string = process.cwd()): Promise<RundoConf
   return DEFAULT_CONFIG;
 }
 
-function mergeConfig(defaultConfig: RundoConfig, userConfig: Partial<RundoConfig>): RundoConfig {
+function mergeConfig(
+  defaultConfig: RundoConfig,
+  userConfig: Partial<RundoConfig>
+): RundoConfig {
   return {
     ...defaultConfig,
     ...userConfig,
