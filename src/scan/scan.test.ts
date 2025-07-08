@@ -54,7 +54,9 @@ describe('collectScripts', () => {
     const { loadConfig } = await import('../config');
 
     vi.mocked(loadConfig).mockResolvedValue({
-      ignore: [], include: [], maxDepth: 3,
+      ignore: [],
+      include: [],
+      maxDepth: 3,
     });
 
     vi.mocked(fastScanPackageJson).mockResolvedValue([
@@ -78,9 +80,9 @@ describe('collectScripts', () => {
 
     const result = await collectScripts('/project');
     expect(result).toHaveLength(4);
-    expect(result[0].name).toBe('root:build');
-    expect(result[1].name).toBe('root:test');
-    expect(result[2].name).toBe('apps/web:dev');
-    expect(result[3].name).toBe('apps/web:build');
+    expect(result[0].name).toBe('apps/web:build');
+    expect(result[1].name).toBe('apps/web:dev');
+    expect(result[2].name).toBe('root:build');
+    expect(result[3].name).toBe('root:test');
   });
 });

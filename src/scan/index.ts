@@ -21,7 +21,7 @@ export async function scanPackageJsonFiles(
   cwd: string = process.cwd(),
   config?: RundoConfig
 ): Promise<string[]> {
-  const actualConfig = config || await loadConfig(cwd);
+  const actualConfig = config || (await loadConfig(cwd));
   return await fastScanPackageJson(cwd, actualConfig);
 }
 
@@ -36,12 +36,11 @@ export async function parsePackageJson(
   }
 }
 
-
 export async function collectScripts(
   cwd: string = process.cwd()
 ): Promise<ScriptChoice[]> {
   const config = await loadConfig(cwd);
-  
+
   const packageJsonFiles = await scanPackageJsonFiles(cwd, config);
 
   // Parse all package.json files in parallel
@@ -81,10 +80,8 @@ export async function collectScripts(
     }
   }
 
-
   // Sort alphabetically
   const sortedChoices = choices.sort((a, b) => a.name.localeCompare(b.name));
-
 
   return sortedChoices;
 }

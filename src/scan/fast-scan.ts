@@ -15,33 +15,38 @@ export async function fastScanPackageJson(
     const rootEntries = await readdir(cwd, { withFileTypes: true });
 
     // Look for package.json in root
-    if (rootEntries.some(entry => entry.isFile() && entry.name === 'package.json')) {
+    if (
+      rootEntries.some(
+        (entry) => entry.isFile() && entry.name === 'package.json'
+      )
+    ) {
       results.push(join(cwd, 'package.json'));
     }
 
     // Filter directories based on config
-    let dirsToScan = rootEntries.filter(entry => 
-      entry.isDirectory() && 
-      !skipDirs.has(entry.name) &&
-      !entry.name.startsWith('.')
+    let dirsToScan = rootEntries.filter(
+      (entry) =>
+        entry.isDirectory() &&
+        !skipDirs.has(entry.name) &&
+        !entry.name.startsWith('.')
     );
 
     // Apply include filter if specified
     if (config.include && config.include.length > 0) {
-      dirsToScan = dirsToScan.filter(entry =>
-        config.include!.some(pattern => 
-          entry.name.includes(pattern) || 
-          new RegExp(pattern.replace('*', '.*')).test(entry.name)
+      dirsToScan = dirsToScan.filter((entry) =>
+        config.include!.some(
+          (pattern) =>
+            entry.name.includes(pattern) ||
+            new RegExp(pattern.replace('*', '.*')).test(entry.name)
         )
       );
     }
 
     // Check locations in parallel
-    const locationPromises = dirsToScan
-      .map(async (entry) => {
-        const dirPath = join(cwd, entry.name);
-        return scanDirectory(dirPath, maxDepth - 1, skipDirs);
-      });
+    const locationPromises = dirsToScan.map(async (entry) => {
+      const dirPath = join(cwd, entry.name);
+      return scanDirectory(dirPath, maxDepth - 1, skipDirs);
+    });
 
     const locationResults = await Promise.all(locationPromises);
     for (const locationResult of locationResults) {
@@ -67,8 +72,8 @@ async function scanDirectory(
     const entries = await readdir(dir, { withFileTypes: true });
 
     // Check for package.json in current directory
-    const hasPackageJson = entries.some(entry =>
-      entry.isFile() && entry.name === 'package.json'
+    const hasPackageJson = entries.some(
+      (entry) => entry.isFile() && entry.name === 'package.json'
     );
 
     if (hasPackageJson) {
@@ -77,14 +82,16 @@ async function scanDirectory(
 
     // Scan subdirectories
     const subDirPromises = entries
-      .filter(entry => {
+      .filter((entry) => {
         if (!entry.isDirectory()) return false;
         if (skipDirs.has(entry.name)) return false;
         if (entry.name.startsWith('.')) return false;
         return true;
       })
       .slice(0, 50) // Limit subdirs for performance
-      .map(entry => scanDirectory(join(dir, entry.name), maxDepth - 1, skipDirs));
+      .map((entry) =>
+        scanDirectory(join(dir, entry.name), maxDepth - 1, skipDirs)
+      );
 
     if (subDirPromises.length > 0) {
       const subResults = await Promise.all(subDirPromises);
