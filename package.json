@@ -1,6 +1,6 @@
 {
   "name": "rundo",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Select & Run Your Scripts Across Any PM, Instantly.",
   "main": "dist/index.js",
   "type": "module",
@@ -39,6 +39,7 @@
     "which": "^4.0.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.5",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.10.4",
     "@types/which": "^3.0.3",
