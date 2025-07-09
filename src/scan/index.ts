@@ -2,6 +2,7 @@ import { readFile } from 'fs/promises';
 import { relative, dirname } from 'path';
 import { fastScanPackageJson } from './fast-scan';
 import { loadConfig, RundoConfig } from '../config';
+import { historyManager } from '../history/history.js';
 
 export interface PackageJson {
   name?: string;
@@ -80,8 +81,35 @@ export async function collectScripts(
     }
   }
 
-  // Sort alphabetically
-  const sortedChoices = choices.sort((a, b) => a.name.localeCompare(b.name));
+  // Sort choices: history items first (by last run time), then alphabetically
+  const history = historyManager.getHistory();
+  const historyMap = new Map(
+    history.map((h) => [`${h.name}:${h.directory}`, h])
+  );
+
+  const sortedChoices = choices.sort((a, b) => {
+    const aKey = `${a.name}:${a.value.directory}`;
+    const bKey = `${b.name}:${b.value.directory}`;
+    const aHistory = historyMap.get(aKey);
+    const bHistory = historyMap.get(bKey);
+
+    // Both have history: sort by last run time (most recent first)
+    if (aHistory && bHistory) {
+      return (
+        new Date(bHistory.lastRun).getTime() -
+        new Date(aHistory.lastRun).getTime()
+      );
+    }
+
+    // Only a has history: a comes first
+    if (aHistory && !bHistory) return -1;
+
+    // Only b has history: b comes first
+    if (!aHistory && bHistory) return 1;
+
+    // Neither has history: sort alphabetically
+    return a.name.localeCompare(b.name);
+  });
 
   return sortedChoices;
 }

@@ -55,13 +55,7 @@ const DEFAULT_CONFIG: RundoConfig = {
   include: [],
 };
 
-const CONFIG_FILES = [
-  '.rdrc',
-  '.rdrc.json',
-  '.rundorc',
-  '.rundorc.json',
-  'rundo.config.json',
-];
+const CONFIG_FILES = ['.rundorc', '.rundorc.json', 'rundo.config.json'];
 
 export async function loadConfig(
   cwd: string = process.cwd()
