@@ -56,8 +56,6 @@ const DEFAULT_CONFIG: RundoConfig = {
 };
 
 const CONFIG_FILES = [
-  '.rdrc',
-  '.rdrc.json',
   '.rundorc',
   '.rundorc.json',
   'rundo.config.json',
