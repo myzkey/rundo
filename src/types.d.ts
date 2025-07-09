@@ -27,7 +27,7 @@ export interface HistoryData {
 // Type declaration for inquirer-autocomplete-prompt
 declare module 'inquirer-autocomplete-prompt' {
   import { QuestionCollection } from 'inquirer';
-  
+
   interface AutocompleteQuestion {
     type: 'autocomplete';
     name: string;
@@ -35,7 +35,7 @@ declare module 'inquirer-autocomplete-prompt' {
     source: (answersSoFar: any, input: string) => Promise<any[]>;
     pageSize?: number;
   }
-  
+
   const autocomplete: any;
   export = autocomplete;
 }
