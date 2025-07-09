@@ -39,8 +39,9 @@ async function main() {
 
     // Find the script name (e.g., "root:build") from the choices
     const scriptChoice = scripts.find(
-      s => s.value.script === selectedScript.script && 
-      s.value.directory === selectedScript.directory
+      (s) =>
+        s.value.script === selectedScript.script &&
+        s.value.directory === selectedScript.directory
     );
     const scriptName = scriptChoice?.name || selectedScript.script;
 

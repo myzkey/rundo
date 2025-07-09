@@ -7,7 +7,7 @@ import type { HistoryEntry, HistoryData } from '../types.js';
 // Test-specific HistoryManager that uses custom paths
 class TestHistoryManager {
   private historyData: HistoryData = { scripts: [] };
-  
+
   constructor(private historyFile: string) {}
 
   async load(): Promise<void> {
@@ -24,7 +24,7 @@ class TestHistoryManager {
 
   async save(entry: Omit<HistoryEntry, 'lastRun'>): Promise<void> {
     await this.ensureConfigDir();
-    
+
     const newEntry: HistoryEntry = {
       ...entry,
       lastRun: new Date().toISOString(),
@@ -68,7 +68,10 @@ class TestHistoryManager {
   private truncateHistory(): void {
     const MAX_HISTORY_ENTRIES = 50;
     if (this.historyData.scripts.length > MAX_HISTORY_ENTRIES) {
-      this.historyData.scripts = this.historyData.scripts.slice(0, MAX_HISTORY_ENTRIES);
+      this.historyData.scripts = this.historyData.scripts.slice(
+        0,
+        MAX_HISTORY_ENTRIES
+      );
     }
   }
 
@@ -93,14 +96,14 @@ describe('HistoryManager', () => {
   beforeEach(async () => {
     testDir = path.join(os.tmpdir(), 'test-rundo', '.local', 'share', 'rundo');
     historyFile = path.join(testDir, 'history.json');
-    
+
     // Clean up any existing test directory
     try {
       await fs.rm(path.join(os.tmpdir(), 'test-rundo'), { recursive: true });
     } catch {
       // Directory doesn't exist, which is expected
     }
-    
+
     // Create a fresh instance with test-specific path
     historyManager = new TestHistoryManager(historyFile);
   });
@@ -122,17 +125,19 @@ describe('HistoryManager', () => {
 
     it('should load existing history from file', async () => {
       const testData = {
-        scripts: [{
-          name: 'root:test',
-          directory: '/test/dir',
-          command: 'npm run test',
-          lastRun: '2024-01-01T00:00:00.000Z'
-        }]
+        scripts: [
+          {
+            name: 'root:test',
+            directory: '/test/dir',
+            command: 'npm run test',
+            lastRun: '2024-01-01T00:00:00.000Z',
+          },
+        ],
       };
-      
+
       await fs.mkdir(testDir, { recursive: true });
       await fs.writeFile(historyFile, JSON.stringify(testData));
-      
+
       await historyManager.load();
       expect(historyManager.getHistory()).toEqual(testData.scripts);
     });
@@ -140,7 +145,7 @@ describe('HistoryManager', () => {
     it('should reset history on corrupted file', async () => {
       await fs.mkdir(testDir, { recursive: true });
       await fs.writeFile(historyFile, 'invalid json');
-      
+
       await historyManager.load();
       expect(historyManager.getHistory()).toEqual([]);
     });
@@ -151,7 +156,7 @@ describe('HistoryManager', () => {
       await historyManager.save({
         name: 'root:build',
         directory: '/project',
-        command: 'npm run build'
+        command: 'npm run build',
       });
 
       const history = historyManager.getHistory();
@@ -159,7 +164,7 @@ describe('HistoryManager', () => {
       expect(history[0]).toMatchObject({
         name: 'root:build',
         directory: '/project',
-        command: 'npm run build'
+        command: 'npm run build',
       });
       expect(history[0].lastRun).toBeDefined();
     });
@@ -168,15 +173,15 @@ describe('HistoryManager', () => {
       await historyManager.save({
         name: 'root:build',
         directory: '/project',
-        command: 'npm run build'
+        command: 'npm run build',
       });
 
-      await new Promise(resolve => globalThis.setTimeout(resolve, 10)); // Small delay
+      await new Promise((resolve) => globalThis.setTimeout(resolve, 10)); // Small delay
 
       await historyManager.save({
         name: 'root:build',
         directory: '/project',
-        command: 'npm run build'
+        command: 'npm run build',
       });
 
       const history = historyManager.getHistory();
@@ -189,7 +194,7 @@ describe('HistoryManager', () => {
         await historyManager.save({
           name: `script:${i}`,
           directory: `/project${i}`,
-          command: `npm run script${i}`
+          command: `npm run script${i}`,
         });
       }
 
@@ -203,7 +208,7 @@ describe('HistoryManager', () => {
       await historyManager.save({
         name: 'root:test',
         directory: '/project',
-        command: 'npm run test'
+        command: 'npm run test',
       });
 
       const fileContent = await fs.readFile(historyFile, 'utf-8');
@@ -218,13 +223,13 @@ describe('HistoryManager', () => {
       await historyManager.save({
         name: 'root:test',
         directory: '/project',
-        command: 'npm run test'
+        command: 'npm run test',
       });
 
       await historyManager.clean();
 
       expect(historyManager.getHistory()).toEqual([]);
-      
+
       await expect(fs.access(historyFile)).rejects.toThrow();
     });
 
@@ -238,7 +243,7 @@ describe('HistoryManager', () => {
       await historyManager.save({
         name: 'root:test',
         directory: '/project',
-        command: 'npm run test'
+        command: 'npm run test',
       });
 
       expect(historyManager.hasHistory('root:test', '/project')).toBe(true);

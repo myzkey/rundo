@@ -4,7 +4,7 @@ import os from 'node:os';
 import type { HistoryEntry, HistoryData } from '../types.js';
 
 // Follow XDG Base Directory Specification
-const DATA_DIR = process.env.XDG_DATA_HOME 
+const DATA_DIR = process.env.XDG_DATA_HOME
   ? path.join(process.env.XDG_DATA_HOME, 'rundo')
   : path.join(os.homedir(), '.local', 'share', 'rundo');
 const HISTORY_FILE = path.join(DATA_DIR, 'history.json');
@@ -27,7 +27,7 @@ export class HistoryManager {
 
   async save(entry: Omit<HistoryEntry, 'lastRun'>): Promise<void> {
     await this.ensureConfigDir();
-    
+
     const newEntry: HistoryEntry = {
       ...entry,
       lastRun: new Date().toISOString(),
@@ -70,7 +70,10 @@ export class HistoryManager {
 
   private truncateHistory(): void {
     if (this.historyData.scripts.length > MAX_HISTORY_ENTRIES) {
-      this.historyData.scripts = this.historyData.scripts.slice(0, MAX_HISTORY_ENTRIES);
+      this.historyData.scripts = this.historyData.scripts.slice(
+        0,
+        MAX_HISTORY_ENTRIES
+      );
     }
   }
 
