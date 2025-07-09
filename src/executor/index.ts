@@ -1,17 +1,26 @@
 import { execSync } from 'child_process';
 import { PackageManager } from '../pm';
+import { historyManager } from '../history/history.js';
 
-export function executeScript(
+export async function executeScript(
   packageManager: PackageManager,
   script: string,
-  directory: string
-): void {
-  const command = `cd "${directory}" && ${packageManager} run ${script}`;
+  directory: string,
+  scriptName: string
+): Promise<void> {
+  const command = `${packageManager} run ${script}`;
 
   try {
-    execSync(command, {
+    execSync(`cd "${directory}" && ${command}`, {
       stdio: 'inherit',
       cwd: process.cwd(),
+    });
+
+    // Save to history after successful execution
+    await historyManager.save({
+      name: scriptName,
+      directory,
+      command,
     });
   } catch {
     process.exit(1);

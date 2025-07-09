@@ -15,6 +15,6 @@
     "sourceMap": true,
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "inquirer-autocomplete-prompt.d.ts"],
   "exclude": ["node_modules", "dist"]
 }
