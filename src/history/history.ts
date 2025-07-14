@@ -23,8 +23,9 @@ export class HistoryManager {
     try {
       const data = await fs.readFile(HISTORY_FILE, 'utf-8')
       this.historyData = JSON.parse(data)
-    } catch (error) {
-      if ((error as any).code !== 'ENOENT') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.code !== 'ENOENT') {
         console.error('Failed to load history, resetting:', error)
       }
       this.historyData = { scripts: [] }
@@ -57,8 +58,9 @@ export class HistoryManager {
     try {
       await fs.unlink(HISTORY_FILE)
       this.historyData = { scripts: [] }
-    } catch (error) {
-      if ((error as any).code !== 'ENOENT') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.code !== 'ENOENT') {
         throw error
       }
     }
@@ -133,6 +135,7 @@ async function promptForHistoryEntry(
         type: 'autocomplete',
         name: 'entry',
         message: '🔍 Search history:',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         source: (_answersSoFar: any, input: string) => {
           if (!input) return Promise.resolve(choices)
 

@@ -14,8 +14,9 @@ class TestHistoryManager {
     try {
       const data = await fs.readFile(this.historyFile, 'utf-8')
       this.historyData = JSON.parse(data)
-    } catch (error) {
-      if ((error as any).code !== 'ENOENT') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.code !== 'ENOENT') {
         console.error('Failed to load history, resetting:', error)
       }
       this.historyData = { scripts: [] }
@@ -48,8 +49,9 @@ class TestHistoryManager {
     try {
       await fs.unlink(this.historyFile)
       this.historyData = { scripts: [] }
-    } catch (error) {
-      if ((error as any).code !== 'ENOENT') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.code !== 'ENOENT') {
         throw error
       }
     }

@@ -63,6 +63,7 @@ rundo history
 ```
 
 Interactive history browser that allows you to:
+
 - Browse previously executed scripts
 - Search through history with fuzzy search
 - Select and re-run scripts instantly
@@ -170,11 +171,11 @@ Rundo supports configuration files for customizing scan behavior:
 
 ### Configuration Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `maxDepth` | number | `10` | Maximum directory depth to scan |
-| `ignore` | string[] | `["node_modules", "dist", ...]` | Directories to ignore |
-| `include` | string[] | `[]` | Specific patterns to include |
+| Option     | Type     | Default                         | Description                     |
+| ---------- | -------- | ------------------------------- | ------------------------------- |
+| `maxDepth` | number   | `10`                            | Maximum directory depth to scan |
+| `ignore`   | string[] | `["node_modules", "dist", ...]` | Directories to ignore           |
+| `include`  | string[] | `[]`                            | Specific patterns to include    |
 
 ## Troubleshooting
 
@@ -195,6 +196,7 @@ A: Use configuration file to limit scan depth or specify include patterns to red
 ### Debug Mode
 
 For debugging, you can check the history file location:
+
 ```bash
 # Default location
 ls ~/.local/share/rundo/history.json
@@ -211,7 +213,9 @@ ls $XDG_DATA_HOME/rundo/history.json
 ## Use Cases
 
 ### Monorepo Development
+
 Perfect for large monorepos with multiple apps and packages:
+
 ```
 my-monorepo/
 ├── apps/
@@ -224,9 +228,11 @@ my-monorepo/
 ```
 
 ### Workspace Management
+
 Quickly switch between different project contexts without memorizing paths and script names.
 
 ### CI/CD Integration
+
 Use in CI environments to run specific scripts across workspace packages.
 
 ## Performance

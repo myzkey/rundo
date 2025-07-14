@@ -21,6 +21,7 @@ export async function promptForScript(
       type: 'autocomplete',
       name: 'script',
       message: '🔍 Search script:',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       source: (_answersSoFar: any, input: string) => {
         if (!input) return Promise.resolve(choiceMap)
 
