@@ -1,7 +1,7 @@
-import js from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import parser from '@typescript-eslint/parser';
-import prettier from 'eslint-config-prettier';
+import js from '@eslint/js'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import parser from '@typescript-eslint/parser'
+import prettier from 'eslint-config-prettier'
 
 export default [
   js.configs.recommended,
@@ -33,6 +33,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
+      semi: ['error', 'never'],
     },
   },
   {
@@ -42,4 +43,4 @@ export default [
       sourceType: 'module',
     },
   },
-];
+]
