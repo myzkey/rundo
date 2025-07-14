@@ -1,4 +1,4 @@
-import which from 'which';
+import which from 'which'
 
 export enum PackageManager {
   BUN = 'bun',
@@ -13,16 +13,16 @@ export async function detectPackageManager(): Promise<PackageManager> {
     PackageManager.PNPM,
     PackageManager.YARN,
     PackageManager.NPM,
-  ];
+  ]
 
   for (const manager of managers) {
     try {
-      await which(manager);
-      return manager;
+      await which(manager)
+      return manager
     } catch {
-      continue;
+      continue
     }
   }
 
-  return PackageManager.NPM;
+  return PackageManager.NPM
 }

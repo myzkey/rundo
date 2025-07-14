@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
-import { promptForScript } from './index';
-import { ScriptChoice } from '../scan';
+import { describe, it, expect, vi } from 'vitest'
+import { promptForScript } from './index'
+import { ScriptChoice } from '../scan'
 
 // Mock inquirer
 vi.mock('inquirer', () => ({
@@ -8,12 +8,12 @@ vi.mock('inquirer', () => ({
     registerPrompt: vi.fn(),
     prompt: vi.fn(),
   },
-}));
+}))
 
 // Mock inquirer-autocomplete-prompt
 vi.mock('inquirer-autocomplete-prompt', () => ({
   default: vi.fn(),
-}));
+}))
 
 describe('promptForScript', () => {
   const mockChoices: ScriptChoice[] = [
@@ -37,21 +37,21 @@ describe('promptForScript', () => {
         directory: '/project/packages/ui',
       },
     },
-  ];
+  ]
 
   it('should throw error when no scripts found', async () => {
     await expect(promptForScript([])).rejects.toThrow(
       'No scripts found in any package.json files'
-    );
-  });
+    )
+  })
 
   it('should return selected script', async () => {
-    const inquirer = await import('inquirer');
+    const inquirer = await import('inquirer')
     vi.mocked(inquirer.default.prompt).mockResolvedValue({
       script: mockChoices[0].value,
-    });
+    })
 
-    const result = await promptForScript(mockChoices);
-    expect(result).toEqual(mockChoices[0].value);
-  });
-});
+    const result = await promptForScript(mockChoices)
+    expect(result).toEqual(mockChoices[0].value)
+  })
+})
