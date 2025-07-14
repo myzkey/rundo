@@ -2,7 +2,7 @@
 
 ## 0.0.6
 
-### Patch Changes
+### Patch Changes 0.0.6
 
 - Add interactive history command and help system
   - Add `rundo history` command with interactive selection and fuzzy search
@@ -13,7 +13,9 @@
   - Refactor code structure: separate help and history modules
   - Remove `.js` extensions from imports with TypeScript configuration
 
-### Patch Changes
+## 0.0.5
+
+### Patch Changes 0.0.5
 
 - 3885ab8: Add command history feature that tracks previously executed scripts and prioritizes frequently used ones in the selection list. History is persisted
 
