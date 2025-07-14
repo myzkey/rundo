@@ -1,10 +1,10 @@
-import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { readFile } from 'fs/promises'
+import { join } from 'path'
 
 export interface RundoConfig {
-  maxDepth?: number;
-  ignore?: string[];
-  include?: string[];
+  maxDepth?: number
+  ignore?: string[]
+  include?: string[]
 }
 
 const DEFAULT_CONFIG: RundoConfig = {
@@ -39,6 +39,7 @@ const DEFAULT_CONFIG: RundoConfig = {
     '.serverless',
     '.gradle',
     '.cache',
+    'cdk.out',
 
     // Language specific
     'target', // Rust
@@ -53,9 +54,9 @@ const DEFAULT_CONFIG: RundoConfig = {
     'bootstrap/cache', // Laravel
   ],
   include: [],
-};
+}
 
-const CONFIG_FILES = ['.rundorc', '.rundorc.json', 'rundo.config.json'];
+const CONFIG_FILES = ['.rundorc', '.rundorc.json', 'rundo.config.json']
 
 export async function loadConfig(
   cwd: string = process.cwd()
@@ -63,18 +64,18 @@ export async function loadConfig(
   // Try to find config file
   for (const configFile of CONFIG_FILES) {
     try {
-      const configPath = join(cwd, configFile);
-      const content = await readFile(configPath, 'utf-8');
-      const userConfig = JSON.parse(content);
+      const configPath = join(cwd, configFile)
+      const content = await readFile(configPath, 'utf-8')
+      const userConfig = JSON.parse(content)
 
       // Merge with defaults
-      return mergeConfig(DEFAULT_CONFIG, userConfig);
+      return mergeConfig(DEFAULT_CONFIG, userConfig)
     } catch {
       // Config file not found or invalid, continue
     }
   }
 
-  return DEFAULT_CONFIG;
+  return DEFAULT_CONFIG
 }
 
 function mergeConfig(
@@ -87,7 +88,7 @@ function mergeConfig(
     // For arrays, replace completely if provided
     ignore: userConfig.ignore ?? defaultConfig.ignore,
     include: userConfig.include ?? defaultConfig.include,
-  };
+  }
 }
 
-export { DEFAULT_CONFIG };
+export { DEFAULT_CONFIG }
