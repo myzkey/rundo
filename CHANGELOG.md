@@ -1,5 +1,11 @@
 # rundo
 
+## 0.0.7
+
+### Patch Changes
+
+- 48cec5a: Add interactive history command and help system
+
 ## 0.0.6
 
 ### Patch Changes 0.0.6
