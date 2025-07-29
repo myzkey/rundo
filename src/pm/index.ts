@@ -1,4 +1,6 @@
 import which from 'which'
+import { existsSync } from 'fs'
+import { join } from 'path'
 
 export enum PackageManager {
   BUN = 'bun',
@@ -7,22 +9,33 @@ export enum PackageManager {
   NPM = 'npm',
 }
 
-export async function detectPackageManager(): Promise<PackageManager> {
-  const managers = [
-    PackageManager.BUN,
-    PackageManager.PNPM,
-    PackageManager.YARN,
-    PackageManager.NPM,
+export async function detectPackageManager(
+  cwd: string = process.cwd()
+): Promise<PackageManager> {
+  // Lock file configurations
+  const lockFileConfigs = [
+    { file: 'bun.lockb', manager: PackageManager.BUN },
+    { file: 'pnpm-lock.yaml', manager: PackageManager.PNPM },
+    { file: 'yarn.lock', manager: PackageManager.YARN },
+    { file: 'package-lock.json', manager: PackageManager.NPM },
   ]
 
-  for (const manager of managers) {
-    try {
-      await which(manager)
-      return manager
-    } catch {
-      continue
+  // Check for lock files in priority order
+  for (const { file, manager } of lockFileConfigs) {
+    if (existsSync(join(cwd, file))) {
+      try {
+        await which(manager)
+        return manager
+      } catch {
+        throw new Error(
+          `Found ${file} but ${manager} is not installed. Please install ${manager} or remove the lock file.`
+        )
+      }
     }
   }
 
-  return PackageManager.NPM
+  // If no lock files found, require explicit package manager specification
+  throw new Error(
+    'No lock file found. Please run your package manager install command first (npm install, yarn install, pnpm install, or bun install).'
+  )
 }
