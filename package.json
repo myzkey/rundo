@@ -1,6 +1,6 @@
 {
   "name": "rundo",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Select & Run Your Scripts Across Any PM, Instantly.",
   "main": "dist/index.js",
   "type": "module",
