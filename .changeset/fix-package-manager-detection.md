@@ -1,5 +1,5 @@
 ---
-"rundo": patch
+'rundo': patch
 ---
 
 Fix package manager detection to use lock files and add version check feature
