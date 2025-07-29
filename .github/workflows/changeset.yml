@@ -7,6 +7,8 @@ jobs:
   changeset:
     name: Changeset
     runs-on: ubuntu-latest
+    # Skip changeset check for PRs targeting develop branch
+    if: github.base_ref != 'develop'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
