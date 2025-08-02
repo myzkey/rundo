@@ -13,7 +13,20 @@ vi.mock('fs', () => ({
 
 // Mock the path module
 vi.mock('path', () => ({
-  join: vi.fn((...args) => args.join('/')),
+  join: vi.fn((...args) => {
+    const result = args.join('/')
+    // Handle double slashes
+    return result.replace(/\/+/g, '/')
+  }),
+  dirname: vi.fn((path) => {
+    const parts = path.split('/').filter(Boolean)
+    if (parts.length <= 1) return '/'
+    return '/' + parts.slice(0, -1).join('/')
+  }),
+  resolve: vi.fn((path) => {
+    if (path === '/') return '/'
+    return path.startsWith('/') ? path : `/${path}`
+  }),
 }))
 
 describe('detectPackageManager', () => {
@@ -98,8 +111,52 @@ describe('detectPackageManager', () => {
       })
 
       await expect(detectPackageManager('/test/dir')).rejects.toThrow(
-        'Found pnpm-lock.yaml but pnpm is not installed. Please install pnpm or remove the lock file.'
+        'Found pnpm-lock.yaml in /test/dir but pnpm is not installed. Please install pnpm or remove the lock file.'
       )
+    })
+  })
+
+  describe('parent directory search', () => {
+    it('should find lock file in parent directory', async () => {
+      const { existsSync } = await import('fs')
+      const { default: which } = await import('which')
+
+      // Mock existsSync to return false for child directory, true for parent
+      vi.mocked(existsSync).mockImplementation((path) => {
+        const pathStr = path.toString()
+        return (
+          pathStr === '/test/pnpm-lock.yaml' &&
+          pathStr.includes('pnpm-lock.yaml')
+        )
+      })
+
+      vi.mocked(which).mockImplementation(async (cmd) => {
+        if (cmd === 'pnpm') return '/path/to/pnpm'
+        throw new Error('not found')
+      })
+
+      const result = await detectPackageManager('/test/child/dir')
+      expect(result).toBe(PackageManager.PNPM)
+    })
+
+    it('should find lock file in grandparent directory', async () => {
+      const { existsSync } = await import('fs')
+      const { default: which } = await import('which')
+
+      // Mock existsSync to simulate finding yarn.lock only in the root directory
+      vi.mocked(existsSync).mockImplementation((path) => {
+        const pathStr = path.toString()
+        // Return true only when checking for yarn.lock in the root directory
+        return pathStr === '/yarn.lock'
+      })
+
+      vi.mocked(which).mockImplementation(async (cmd) => {
+        if (cmd === 'yarn') return '/path/to/yarn'
+        throw new Error('not found')
+      })
+
+      const result = await detectPackageManager('/child/grandchild/dir')
+      expect(result).toBe(PackageManager.YARN)
     })
   })
 
