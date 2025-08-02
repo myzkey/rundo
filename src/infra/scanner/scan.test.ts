@@ -13,7 +13,7 @@ vi.mock('./fast-scan', () => ({
 }))
 
 // Mock config
-vi.mock('../config', () => ({
+vi.mock('@/domain/config', () => ({
   loadConfig: vi.fn(),
 }))
 
@@ -51,7 +51,7 @@ describe('parsePackageJson', () => {
 describe('collectScripts', () => {
   it('should collect scripts from multiple package.json files', async () => {
     const { fastScanPackageJson } = await import('./fast-scan')
-    const { loadConfig } = await import('../config')
+    const { loadConfig } = await import('@/domain/config')
 
     vi.mocked(loadConfig).mockResolvedValue({
       ignore: [],
