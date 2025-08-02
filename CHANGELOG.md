@@ -1,5 +1,11 @@
 # rundo
 
+## 0.0.11
+
+### Patch Changes
+
+- 4184d87: fix: implement search for lock files in parent directorie
+
 ## 0.0.10
 
 ### Patch Changes
