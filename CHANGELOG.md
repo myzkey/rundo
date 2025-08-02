@@ -1,5 +1,11 @@
 # rundo
 
+## 0.0.10
+
+### Patch Changes
+
+- 10ad90b: refactor: restructure codebase with clean architecture
+
 ## 0.0.8
 
 ### Patch Changes
