@@ -1,4 +1,11 @@
-import { existsSync, readFileSync, writeFileSync, mkdirSync, unlinkSync, readdirSync } from 'fs'
+import {
+  existsSync,
+  readFileSync,
+  writeFileSync,
+  mkdirSync,
+  unlinkSync,
+  readdirSync,
+} from 'fs'
 import { join } from 'path'
 import { homedir } from 'os'
 import type { CacheClient, CacheOptions } from './types'
@@ -12,11 +19,11 @@ export class FileCacheClient<T> implements CacheClient<T> {
   private readonly directory: string
 
   constructor(namespace: string, options?: CacheOptions) {
-    const baseDir = options?.directory || (
-      process.env.XDG_DATA_HOME
+    const baseDir =
+      options?.directory ||
+      (process.env.XDG_DATA_HOME
         ? join(process.env.XDG_DATA_HOME, 'rundo')
-        : join(homedir(), '.local', 'share', 'rundo')
-    )
+        : join(homedir(), '.local', 'share', 'rundo'))
     this.directory = join(baseDir, 'cache', namespace)
     this.ensureDirectory()
   }
@@ -46,7 +53,7 @@ export class FileCacheClient<T> implements CacheClient<T> {
     try {
       const entry: CacheEntry<T> = {
         value,
-        expiry: ttl ? Date.now() + ttl : undefined
+        expiry: ttl ? Date.now() + ttl : undefined,
       }
 
       const filePath = this.getFilePath(key)

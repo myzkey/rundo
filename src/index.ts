@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
-import { detectPackageManager, detectPackageManagerForDirectory } from '@/infra/pm'
+import {
+  detectPackageManager,
+  detectPackageManagerForDirectory,
+} from '@/infra/pm'
 import { collectScripts } from '@/infra/scanner'
 import { promptForScript } from '@/presentation/prompt'
 import { executeScript } from '@/infra/executor'
@@ -53,8 +56,12 @@ async function main() {
     }
 
     // Detect initial package manager for display purposes
-    const initialPackageManager = await detectPackageManager().catch(() => 'npm')
-    console.log(`✅ Found ${scripts.length} scripts using ${initialPackageManager}`)
+    const initialPackageManager = await detectPackageManager().catch(
+      () => 'npm'
+    )
+    console.log(
+      `✅ Found ${scripts.length} scripts using ${initialPackageManager}`
+    )
 
     const selectedScript = await promptForScript(scripts)
 

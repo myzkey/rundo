@@ -54,7 +54,10 @@ export class VersionManager {
   }
 
   private formatUpdateMessage(versionInfo: VersionInfo): string {
-    const hasUpdate = this.compareVersions(versionInfo.current, versionInfo.latest)
+    const hasUpdate = this.compareVersions(
+      versionInfo.current,
+      versionInfo.latest
+    )
 
     if (!hasUpdate) return ''
 
@@ -135,7 +138,11 @@ export class VersionManager {
     const currentParts = current.split('.').map(Number)
     const latestParts = latest.split('.').map(Number)
 
-    for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
+    for (
+      let i = 0;
+      i < Math.max(currentParts.length, latestParts.length);
+      i++
+    ) {
       const currentPart = currentParts[i] || 0
       const latestPart = latestParts[i] || 0
 

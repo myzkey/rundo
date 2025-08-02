@@ -20,8 +20,8 @@ export async function executeScript(
     // Save to history after successful execution
     if (historyManager) {
       await historyManager.save({
-      name: scriptName,
-      directory,
+        name: scriptName,
+        directory,
         command,
       })
     }
