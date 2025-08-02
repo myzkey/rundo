@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { promptForScript } from './index'
-import { ScriptChoice } from '../scan'
+import { ScriptChoice } from '@/domain/types'
 
 // Mock inquirer
 vi.mock('inquirer', () => ({

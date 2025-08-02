@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
-import type { HistoryEntry, HistoryData } from '../types.js'
+import type { HistoryEntry, HistoryData } from '@/domain/types.js'
 
 // Test-specific HistoryManager that uses custom paths
 class TestHistoryManager {

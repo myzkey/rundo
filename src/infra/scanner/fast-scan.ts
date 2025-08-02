@@ -1,6 +1,6 @@
 import { readdir } from 'fs/promises'
 import { join } from 'path'
-import { RundoConfig } from '../config'
+import { RundoConfig } from '@/domain/config'
 
 export async function fastScanPackageJson(
   cwd: string,
