@@ -1,12 +1,13 @@
 import { execSync } from 'child_process'
-import { PackageManager } from '../pm'
-import { historyManager } from '../history/history.js'
+import { PackageManager } from '@/infra/pm'
+import type { HistoryManager } from '@/application/services/history-manager'
 
 export async function executeScript(
   packageManager: PackageManager,
   script: string,
   directory: string,
-  scriptName: string
+  scriptName: string,
+  historyManager?: HistoryManager
 ): Promise<void> {
   const command = `${packageManager} run ${script}`
 
@@ -17,11 +18,13 @@ export async function executeScript(
     })
 
     // Save to history after successful execution
-    await historyManager.save({
+    if (historyManager) {
+      await historyManager.save({
       name: scriptName,
       directory,
-      command,
-    })
+        command,
+      })
+    }
   } catch {
     process.exit(1)
   }

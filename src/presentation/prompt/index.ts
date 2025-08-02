@@ -1,6 +1,6 @@
 import inquirer from 'inquirer'
 import autocomplete from 'inquirer-autocomplete-prompt'
-import { ScriptChoice } from '../scan'
+import { ScriptChoice } from '@/infra/scanner'
 
 inquirer.registerPrompt('autocomplete', autocomplete)
 

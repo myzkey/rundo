@@ -1,8 +1,8 @@
 import { readFile } from 'fs/promises'
 import { relative, dirname } from 'path'
 import { fastScanPackageJson } from './fast-scan'
-import { loadConfig, RundoConfig } from '../config'
-import { historyManager } from '../history/history.js'
+import { loadConfig, RundoConfig } from '@/domain/config'
+import type { HistoryManager } from '@/application/services/history-manager'
 
 export interface PackageJson {
   name?: string
@@ -38,7 +38,8 @@ export async function parsePackageJson(
 }
 
 export async function collectScripts(
-  cwd: string = process.cwd()
+  cwd: string = process.cwd(),
+  historyManager?: HistoryManager
 ): Promise<ScriptChoice[]> {
   const config = await loadConfig(cwd)
 
@@ -82,7 +83,7 @@ export async function collectScripts(
   }
 
   // Sort choices: history items first (by last run time), then alphabetically
-  const history = historyManager.getHistory()
+  const history = historyManager ? historyManager.getHistory() : []
   const historyMap = new Map(
     history.map((h) => [`${h.name}:${h.directory}`, h])
   )

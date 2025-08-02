@@ -15,7 +15,11 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": ["src/**/*", "inquirer-autocomplete-prompt.d.ts"],
   "exclude": ["node_modules", "dist"]

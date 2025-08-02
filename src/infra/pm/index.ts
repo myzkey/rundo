@@ -39,3 +39,9 @@ export async function detectPackageManager(
     'No lock file found. Please run your package manager install command first (npm install, yarn install, pnpm install, or bun install).'
   )
 }
+
+export async function detectPackageManagerForDirectory(
+  directory: string
+): Promise<PackageManager> {
+  return detectPackageManager(directory)
+}
